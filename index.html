@@ -1,6 +1,21 @@
 <!DOCTYPE html>
 <head>
 <meta charset="utf-8">
+  <style>
+    div.tooltip {
+      position: absolute;
+      text-align: center;
+      width: 60px;
+      height: 14px;
+      padding: 2px;
+      font: 12px sans-serif;
+      background: lightsteelblue;
+      border: 0px;
+      border-radius: 8px;
+      pointer-events: none;
+    }
+  </style>
+
   <script src="https://d3js.org/d3.v3.min.js"></script>
   <script src="https://d3js.org/topojson.v1.min.js"></script>
 </head>
@@ -17,6 +32,9 @@
     var path = d3.geo.path()
         .projection(projection);
     var color = d3.scale.category20();
+    var div = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
 
     d3.json("https://raw.githubusercontent.com/y-yagi/japan-map/master/japan.json", function(error, japan) {
         console.log(japan.objects);
@@ -25,8 +43,22 @@
             .data(topo.features)
             .enter()
             .append("path")
-            .attr("fill", function(d){ return color(d.geometry.coordinates); })
-            .attr("d", path);
+            .attr("fill", function(d) { return color(d.geometry.coordinates); })
+            .attr("d", path)
+            .attr("text", function(d) { return d3.select(this).attr("text", d.properties.name_local); })
+            .on("mouseover", function(d) {
+                div.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                div.html(d.properties.name_local)
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px");
+                })
+            .on("mouseout", function(d) {
+                div.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+            })
     });
     </script>
 </body>
