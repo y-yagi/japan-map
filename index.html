@@ -16,6 +16,7 @@
         .translate([width / 2, height / 2]);
     var path = d3.geo.path()
         .projection(projection);
+    var color = d3.scale.category20();
 
     d3.json("https://raw.githubusercontent.com/y-yagi/japan-map/master/japan.json", function(error, japan) {
         console.log(japan.objects);
@@ -24,6 +25,7 @@
             .data(topo.features)
             .enter()
             .append("path")
+            .attr("fill", function(d){ return color(d.geometry.coordinates); })
             .attr("d", path);
     });
     </script>
