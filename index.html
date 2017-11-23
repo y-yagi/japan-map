@@ -37,7 +37,6 @@
         .style("opacity", 0);
 
     d3.json("https://raw.githubusercontent.com/y-yagi/japan-map/master/ryouseikoku_topo.json", function(error, japan) {
-        console.log(japan.objects);
         var topo = topojson.feature(japan, japan.objects.ryouseikoku_utf8);
         svg.selectAll(".pref")
             .data(topo.features)
@@ -45,7 +44,6 @@
             .append("path")
             .attr("fill", function(d) { return color(d.properties.R_CODE); })
             .attr("d", path)
-            .attr("text", function(d) { return d3.select(this).attr("text", d.properties.COUNTRY_NAME); })
             .on("mouseover", function(d) {
                 div.transition()
                     .duration(200)
@@ -58,7 +56,24 @@
                 div.transition()
                     .duration(500)
                     .style("opacity", 0);
-            })
+            });
+
+        svg.selectAll(".pref-label")
+          .data(topo.features)
+          .enter()
+          .append("text")
+          .attr("class", ".pref-label")
+          .attr("x", function(d) {
+              return path.centroid(d)[0];
+          })
+          .attr("y", function(d) {
+              return path.centroid(d)[1];
+          })
+          .attr("text-anchor", "middle")
+          .attr("font-size", "12px")
+          .text(function(d) {
+            return d.properties.COUNTRY_NAME;
+          });
     });
     </script>
 </body>
