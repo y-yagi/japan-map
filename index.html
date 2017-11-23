@@ -35,6 +35,7 @@
     var div = d3.select("body").append("div")
         .attr("class", "tooltip")
         .style("opacity", 0);
+    var shownCountries = [];
 
     d3.json("https://raw.githubusercontent.com/y-yagi/japan-map/master/ryouseikoku_topo.json", function(error, japan) {
         var topo = topojson.feature(japan, japan.objects.ryouseikoku_utf8);
@@ -72,7 +73,13 @@
           .attr("text-anchor", "middle")
           .attr("font-size", "12px")
           .text(function(d) {
-            return d.properties.COUNTRY_NAME;
+            var country = d.properties.COUNTRY_NAME;
+            if (shownCountries.includes(country)) {
+              return "";
+            } else {
+              shownCountries.push(country)
+              return country;
+            }
           });
     });
     </script>
