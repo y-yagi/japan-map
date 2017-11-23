@@ -43,7 +43,7 @@
             .data(topo.features)
             .enter()
             .append("path")
-            .attr("fill", function(d) { return color(d.geometry.coordinates); })
+            .attr("fill", function(d) { return color(d.properties.R_CODE); })
             .attr("d", path)
             .attr("text", function(d) { return d3.select(this).attr("text", d.properties.COUNTRY_NAME); })
             .on("mouseover", function(d) {
