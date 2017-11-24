@@ -36,7 +36,7 @@
         .style("opacity", 0);
     var shownCountries = [];
 
-    d3.json("https://raw.githubusercontent.com/y-yagi/japan-map/master/ryouseikoku_topo.json", function(error, japan) {
+    d3.json("https://raw.githubusercontent.com/y-yagi/ryousei-map/master/ryouseikoku_topo.json", function(error, japan) {
         var topo = topojson.feature(japan, japan.objects.ryouseikoku_utf8);
         svg.selectAll(".pref")
             .data(topo.features)
